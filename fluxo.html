@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxo de Caixa</title>
+    <style>
+        body {
+            background: #121214;
+            color: #e1e1e6;
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .column {
+            flex: 1;
+            min-width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: #202024;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #323238;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .form-group input {
+            flex: 1;
+            background: #121214;
+            border: 1px solid #323238;
+            color: #e1e1e6;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .btn-entry {
+            background: #00b37e;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-entry:hover {
+            background: #008f63;
+        }
+
+        .btn-out {
+            background: #e53935;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-out:hover {
+            background: #c62828;
+        }
+
+        .lcd-display {
+            background: #121214;
+            border: 1px solid #323238;
+            color: #00b37e;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .lcd-display.negative {
+            color: #e53935;
+        }
+
+        .history-item {
+            background: #121214;
+            border: 1px solid #323238;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-info span {
+            display: block;
+            font-size: 0.8rem;
+            color: #a1a1aa;
+        }
+
+        .history-info strong {
+            font-size: 0.95rem;
+            color: #e1e1e6;
+        }
+
+        .history-value {
+            font-weight: bold;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .history-value.positive {
+            color: #00b37e;
+        }
+
+        .history-value.negative {
+            color: #e53935;
+        }
+
+        .btn-delete {
+            background: transparent;
+            border: none;
+            color: #e53935;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-print {
+            background: #29292e;
+            color: #e1e1e6;
+            border: 1px solid #323238;
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-print:hover {
+            background: #323238;
+        }
+
+        .back-btn {
+            background: #29292e;
+            color: #e1e1e6;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            border: 1px solid #323238;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        /* Oculto no ecrã normal */
+        .print-only-title {
+            display: none;
+        }
+
+        /* CONFIGURAÇÃO EXCLUSIVA PARA PDF / IMPRESSÃO */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                padding: 0 !important;
+            }
+
+            .column:first-child,
+            .back-btn,
+            .btn-print,
+            .btn-delete,
+            .screen-title-history {
+                display: none !important;
+            }
+
+            .container {
+                display: block !important;
+                width: 100% !important;
+                max-width: none !important;
+            }
+
+            .column {
+                width: 100% !important;
+                min-width: auto !important;
+            }
+
+            .print-card {
+                background: white !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+
+            /* 1. Topo: Título e Linha Separadora */
+            .print-only-title {
+                display: block !important;
+                order: 1;
+                margin-bottom: 15px;
+            }
+
+            .print-only-title h2 {
+                color: black !important;
+                text-align: center;
+                font-size: 1.4rem;
+                margin: 0 0 10px 0;
+            }
+
+            .print-only-title hr {
+                border: 0;
+                border-top: 2px solid #333;
+                margin: 0 0 20px 0;
+            }
+
+            /* 2. Meio: Descrição de Entradas e Saídas (Histórico) */
+            .print-historico-section {
+                order: 2;
+                margin-bottom: 20px;
+            }
+
+            /* 3. Fundo: O Total / Saldo */
+            .print-saldo-section {
+                order: 3;
+            }
+
+            .lcd-display {
+                background: #f4f4f5 !important;
+                border: 1px solid #ccc !important;
+                color: black !important;
+            }
+
+            .history-item {
+                background: #f9f9fb !important;
+                border: 1px solid #ddd !important;
+                margin-bottom: 8px !important;
+            }
+
+            .history-info strong {
+                color: black !important;
+            }
+
+            .history-info span {
+                color: #555 !important;
+            }
+
+            .history-value.positive {
+                color: #008f63 !important;
+            }
+
+            .history-value.negative {
+                color: #c62828 !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header" style="max-width: 1200px; margin: 0 auto 30px auto;">
+        <h2 style="color: #00b37e; margin: 0; display: flex; align-items: center; gap: 10px;">📊 Fluxo de Caixa</h2>
+        <a href="panel.html" class="back-btn">Voltar ao Painel</a>
+    </div>
+
+    <div class="container">
+        <!-- Coluna da Esquerda: Formulários (Oculta na Impressão) -->
+        <div class="column">
+
+            <!-- Painel Adicionar Nova Entrada -->
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin: 0; font-size: 1.1rem; color: #e1e1e6;">Adicionar Nova Entrada</h3>
+                    <div id="lcd-total-entrada" class="lcd-display"
+                        style="margin: 0; padding: 6px 12px; font-size: 1rem;">R$ 0,00</div>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="desc-entrada" placeholder="Descrição (ex: Uber, 99...)">
+                </div>
+                <div class="form-group">
+                    <input type="number" step="0.01" id="valor-entrada" placeholder="Valor (R$)">
+                    <input type="date" id="data-entrada">
+                </div>
+                <button id="btn-add-entrada" class="btn-entry">+ Adicionar Entrada</button>
+            </div>
+
+            <!-- Painel Adicionar Nova Saída -->
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin: 0; font-size: 1.1rem; color: #e1e1e6;">Adicionar Nova Saída</h3>
+                    <div id="lcd-total-saida" class="lcd-display negative"
+                        style="margin: 0; padding: 6px 12px; font-size: 1rem;">R$ 0,00</div>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="desc-saida" placeholder="Descrição (ex: Combustível...)">
+                </div>
+                <div class="form-group">
+                    <input type="number" step="0.01" id="valor-saida" placeholder="Valor (R$)">
+                    <input type="date" id="data-saida">
+                </div>
+                <button id="btn-add-saida" class="btn-out">- Adicionar Saída</button>
+            </div>
+
+        </div>
+
+        <!-- Coluna da Direita: Histórico e Total -->
+        <div class="column">
+            <div class="card print-card" style="height: 100%; display: flex; flex-direction: column;">
+
+                <!-- 1. Título e Linha (Exclusivos para Impressão - Ordem 1) -->
+                <div class="print-only-title">
+                    <h2>Relatório de Fluxo de Caixa</h2>
+                    <hr>
+                </div>
+
+                <!-- 2. Histórico / Descrição de Entradas e Saídas (Ordem 2 na Impressão) -->
+                <div class="print-historico-section" style="display: flex; flex-direction: column; flex: 1;">
+                    <h3 class="screen-title-history" style="margin: 0 0 15px 0; font-size: 1.1rem; color: #e1e1e6;">
+                        Histórico Consolidado</h3>
+
+                    <div id="historico-lista"
+                        style="flex: 1; max-height: 380px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;">
+                        <!-- Lançamentos dinâmicos -->
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- 3. Total / Saldo (Ordem 3 na Impressão) -->
+                <div class="print-saldo-section" style="margin-bottom: 15px;">
+                    <hr>
+                    <span style="font-size: 0.85rem; color: #a1a1aa; display: block; margin-bottom: 5px;">Saldo Real em
+                        Caixa</span>
+                    <div id="lcd-saldo-geral" class="lcd-display" style="font-size: 1.5rem; margin-bottom: 0;">R$ 0,00
+                    </div>
+                </div>
+
+                <button id="btn-gerar-pdf" class="btn-print">
+                    🖨️ Gerar PDF / Imprimir Relatório
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script de Gestão -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const STORAGE_KEY = 'finance_fluxo_caixa_data';
+
+            let dadosCaixa = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+                entradas: [],
+                saidas: []
+            };
+
+            const hojeIso = new Date().toISOString().split('T')[0];
+            const inputDataEntrada = document.getElementById('data-entrada');
+            const inputDataSaida = document.getElementById('data-saida');
+
+            if (inputDataEntrada && !inputDataEntrada.value) inputDataEntrada.value = hojeIso;
+            if (inputDataSaida && !inputDataSaida.value) inputDataSaida.value = hojeIso;
+
+            function formatarMoeda(valor) {
+                return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            }
+
+            function formatarDataBR(dataIso) {
+                if (!dataIso) return '';
+                const partes = dataIso.split('-');
+                if (partes.length !== 3) return dataIso;
+                return `${partes[2]}/${partes[1]}/${partes[0]}`;
+            }
+
+            function atualizarTela() {
+                const listaEl = document.getElementById('historico-lista');
+                if (!listaEl) return;
+
+                listaEl.innerHTML = '';
+
+                let totalEntradas = 0;
+                let totalSaidas = 0;
+
+                dadosCaixa.entradas.forEach((item, index) => {
+                    totalEntradas += item.valor;
+                    const div = document.createElement('div');
+                    div.className = 'history-item';
+                    div.innerHTML = `
+                        <div class="history-info">
+                            <strong>${item.descricao}</strong>
+                            <span>${item.data}</span>
+                        </div>
+                        <div class="history-value positive">
+                            + ${formatarMoeda(item.valor)}
+                            <button class="btn-delete" onclick="removerItemCaixa('entrada', ${index})" title="Excluir">✕</button>
+                        </div>
+                    `;
+                    listaEl.appendChild(div);
+                });
+
+                dadosCaixa.saidas.forEach((item, index) => {
+                    totalSaidas += item.valor;
+                    const div = document.createElement('div');
+                    div.className = 'history-item';
+                    div.innerHTML = `
+                        <div class="history-info">
+                            <strong>${item.descricao}</strong>
+                            <span>${item.data}</span>
+                        </div>
+                        <div class="history-value negative">
+                            - ${formatarMoeda(item.valor)}
+                            <button class="btn-delete" onclick="removerItemCaixa('saida', ${index})" title="Excluir">✕</button>
+                        </div>
+                    `;
+                    listaEl.appendChild(div);
+                });
+
+                if (dadosCaixa.entradas.length === 0 && dadosCaixa.saidas.length === 0) {
+                    listaEl.innerHTML = '<p style="color: #71717a; text-align: center; font-size: 0.9rem; margin-top: 40px;">Nenhum lançamento registado.</p>';
+                }
+
+                const lcdEntrada = document.getElementById('lcd-total-entrada');
+                const lcdSaida = document.getElementById('lcd-total-saida');
+                if (lcdEntrada) lcdEntrada.textContent = formatarMoeda(totalEntradas);
+                if (lcdSaida) lcdSaida.textContent = formatarMoeda(totalSaidas);
+
+                const saldoReal = totalEntradas - totalSaidas;
+                const saldoEl = document.getElementById('lcd-saldo-geral');
+                if (saldoEl) {
+                    saldoEl.textContent = formatarMoeda(saldoReal);
+                    if (saldoReal < 0) {
+                        saldoEl.classList.add('negative');
+                    } else {
+                        saldoEl.classList.remove('negative');
+                    }
+                }
+
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(dadosCaixa));
+            }
+
+            window.removerItemCaixa = function (tipo, index) {
+                if (tipo === 'entrada') {
+                    dadosCaixa.entradas.splice(index, 1);
+                } else if (tipo === 'saida') {
+                    dadosCaixa.saidas.splice(index, 1);
+                }
+                atualizarTela();
+            };
+
+            const btnAddEntrada = document.getElementById('btn-add-entrada');
+            if (btnAddEntrada) {
+                btnAddEntrada.addEventListener('click', () => {
+                    const desc = document.getElementById('desc-entrada').value.trim();
+                    const valor = parseFloat(document.getElementById('valor-entrada').value);
+                    const dataInput = document.getElementById('data-entrada').value;
+
+                    if (!desc || isNaN(valor) || valor <= 0 || !dataInput) {
+                        alert('Por favor, preencha a descrição, um valor válido e a data.');
+                        return;
+                    }
+
+                    const dataFormatada = formatarDataBR(dataInput);
+                    dadosCaixa.entradas.push({ descricao: desc, valor: valor, data: dataFormatada });
+
+                    document.getElementById('desc-entrada').value = '';
+                    document.getElementById('valor-entrada').value = '';
+                    atualizarTela();
+                });
+            }
+
+            const btnAddSaida = document.getElementById('btn-add-saida');
+            if (btnAddSaida) {
+                btnAddSaida.addEventListener('click', () => {
+                    const desc = document.getElementById('desc-saida').value.trim();
+                    const valor = parseFloat(document.getElementById('valor-saida').value);
+                    const dataInput = document.getElementById('data-saida').value;
+
+                    if (!desc || isNaN(valor) || valor <= 0 || !dataInput) {
+                        alert('Por favor, preencha a descrição, um valor válido e a data.');
+                        return;
+                    }
+
+                    const dataFormatada = formatarDataBR(dataInput);
+                    dadosCaixa.saidas.push({ descricao: desc, valor: valor, data: dataFormatada });
+
+                    document.getElementById('desc-saida').value = '';
+                    document.getElementById('valor-saida').value = '';
+                    atualizarTela();
+                });
+            }
+
+            const btnGerarPdf = document.getElementById('btn-gerar-pdf');
+            if (btnGerarPdf) {
+                btnGerarPdf.addEventListener('click', () => {
+                    window.print();
+                });
+            }
+
+            atualizarTela();
+        });
+    </script>
+</body>
+
+</html>

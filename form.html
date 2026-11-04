@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Contas - Painel Financeiro</title>
+    <!-- Se tiver um ficheiro style.css global, pode mantê-lo aqui. Os estilos abaixo garantem o padrão visual imediato. -->
+    <link rel="stylesheet" href="./css/form.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Cabeçalho com Navegação -->
+        <div class="header-nav">
+            <h2>Gestão e Cadastro de Contas</h2>
+            <div class="nav-links">
+                <a href="panel.html" class="btn-nav">Painel</a>
+                <a href="cards.html" class="btn-nav btn-nav-primary">Ver Cards</a>
+            </div>
+        </div>
+
+        <!-- Formulário Principal -->
+        <div class="form-card">
+            <form id="form-finance">
+
+                <!-- Secção de Contas Fixas -->
+                <h3 style="color: #00b37e; margin-bottom: 15px; border-bottom: 1px solid #29292e; padding-bottom: 8px;">
+                    Contas Fixas</h3>
+
+                <div class="form-row">
+                    <label style="flex: 2; margin: 0;">Apartamento:</label>
+                    <input type="number" step="0.01" id="val-casa" placeholder="R$ Valor" style="flex: 1;">
+                    <input type="date" id="date-casa" style="flex: 1.5;">
+                </div>
+
+                <div class="form-row">
+                    <label style="flex: 2; margin: 0;">Carro:</label>
+                    <input type="number" step="0.01" id="val-carro" placeholder="R$ Valor" style="flex: 1;">
+                    <input type="date" id="date-carro" style="flex: 1.5;">
+                </div>
+
+                <div class="form-row">
+                    <label style="flex: 2; margin: 0;">Condomínio:</label>
+                    <input type="number" step="0.01" id="val-condominio" placeholder="R$ Valor" style="flex: 1;">
+                    <input type="date" id="date-condominio" style="flex: 1.5;">
+                </div>
+
+                <div class="form-row">
+                    <label style="flex: 2; margin: 0;">Internet/Net:</label>
+                    <input type="number" step="0.01" id="val-net" placeholder="R$ Valor" style="flex: 1;">
+                    <input type="date" id="date-net" style="flex: 1.5;">
+                </div>
+
+                <div class="form-row">
+                    <label style="flex: 2; margin: 0;">Luz:</label>
+                    <input type="number" step="0.01" id="val-luz" placeholder="R$ Valor" style="flex: 1;">
+                    <input type="date" id="date-luz" style="flex: 1.5;">
+                </div>
+
+                <!-- Secção de Contas Variáveis / Parceladas -->
+                <h3
+                    style="color: #00b37e; margin: 25px 0 15px 0; border-bottom: 1px solid #29292e; padding-bottom: 8px;">
+                    Contas Variáveis / Parceladas</h3>
+
+                <div id="dynamic-items-container"></div>
+
+                <button type="button" id="btn-add-item" class="btn-secondary">+ Adicionar Nova Conta Variável</button>
+
+                <div style="margin-top: 30px;">
+                    <button type="submit" class="btn-primary">Salvar Orçamento</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Importa o script de gestão do formulário que preparámos anteriormente -->
+    <script src="./js/form.js"></script>
+</body>
+
+</html>

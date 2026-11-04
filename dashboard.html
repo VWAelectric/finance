@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance - Painel Principal</title>
+    <!-- Estilo global com o tema escuro -->
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/dashboard.css">
+</head>
+<body style="display: block; background-color: #121214;">
+
+    <!-- Cabeçalho do Sistema -->
+    <header class="app-header">
+        <h1>Finance 💰</h1>
+        <div class="user-info">
+            <span id="user-welcome">Carregando...</span>
+            <button id="btn-logout" class="btn-outline">Sair</button>
+        </div>
+    </header>
+
+   <!-- Conteúdo Principal: Gestão de Contas (Largura de 1200px) -->
+    <main class="app-content">
+        <div class="card card-finance">
+            <h2>Planejamento de Contas do Mês</h2>
+            <p class="subtitle">Cadastre os valores, datas de vencimento e acompanhe o histórico e depósitos diários.</p>
+
+            <div class="finance-layout">
+                <!-- COLUNA DA ESQUERDA: Formulário de Cadastro -->
+                <form id="form-finance">
+                    <!-- Seção: Contas Fixas -->
+                    <fieldset class="finance-section">
+                        <legend>Contas Fixas</legend>
+                        
+                        <!-- Casa -->
+                        <div class="input-group">
+                            <label>Apartamento</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="number" step="0.01" id="val-casa" placeholder="Valor (R$)" style="flex: 2;">
+                                <input type="date" id="date-casa" style="flex: 3; background-color: #121214; border: 1px solid #29292e; border-radius: 4px; color: #e1e1e6; padding: 10px;" title="Data de Vencimento">
+                            </div>
+                        </div>
+
+                        <!-- Carro -->
+                        <div class="input-group">
+                            <label>Carro</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="number" step="0.01" id="val-carro" placeholder="Valor (R$)" style="flex: 2;">
+                                <input type="date" id="date-carro" style="flex: 3; background-color: #121214; border: 1px solid #29292e; border-radius: 4px; color: #e1e1e6; padding: 10px;">
+                            </div>
+                        </div>
+
+                        <!-- Condomínio -->
+                        <div class="input-group">
+                            <label>Condomínio</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="number" step="0.01" id="val-condominio" placeholder="Valor (R$)" style="flex: 2;">
+                                <input type="date" id="date-condominio" style="flex: 3; background-color: #121214; border: 1px solid #29292e; border-radius: 4px; color: #e1e1e6; padding: 10px;">
+                            </div>
+                        </div>
+
+                        <!-- Internet -->
+                        <div class="input-group">
+                            <label>Telefone / Internet</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="number" step="0.01" id="val-net" placeholder="Valor (R$)" style="flex: 2;">
+                                <input type="date" id="date-net" style="flex: 3; background-color: #121214; border: 1px solid #29292e; border-radius: 4px; color: #e1e1e6; padding: 10px;">
+                            </div>
+                        </div>
+
+                        <!-- Luz -->
+                        <div class="input-group">
+                            <label>Luz</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="number" step="0.01" id="val-luz" placeholder="Valor (R$)" style="flex: 2;">
+                                <input type="date" id="date-luz" style="flex: 3; background-color: #121214; border: 1px solid #29292e; border-radius: 4px; color: #e1e1e6; padding: 10px;">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Seção: Contas Variáveis / Personalizadas -->
+                    <fieldset class="finance-section">
+                        <legend>Contas Variáveis (Mês Atual)</legend>
+                        <p class="section-tip">Adicione despesas extras e suas datas de vencimento.</p>
+
+                        <div id="dynamic-items-container">
+                            <!-- Inseridas via JS -->
+                        </div>
+
+                        <button type="button" id="btn-add-item" class="btn-secondary">+ Adicionar Outra Conta</button>
+                    </fieldset>
+
+                    <button type="submit" class="btn" style="margin-top: 10px;">Salvar Orçamento</button>
+                </form>
+
+                <!-- COLUNA DA DIREITA: Histórico e Cards com Ações -->
+                <div class="cards-column">
+                    <h3>Histórico de Contas e Reserva Diária</h3>
+                    <div id="cards-summary-container">
+                        <p style="color: #8f8f9e; font-size: 14px;">Preencha os valores e clique em salvar para visualizar os cartões.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Script de segurança e controle do dashboard -->
+    <script src="./js/dashboard.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Controle - Gestão Financeira</title>
+    <link rel="stylesheet" href="./css/panel.css">
+
+</head>
+
+<body>
+
+    <!-- No topo direito do seu panel.html -->
+    <div class="container-logout">
+        <div class="logout">
+            <!-- Nome do Utilizador -->
+            <span id="user-welcome" class="username"></span>
+
+            <!-- Divisor subtil -->
+            <span class="divisor">|</span>
+
+            <!-- Botão Sair com visual moderno e discreto -->
+            <button id="btn-logout" title="Sair do Sistema" class="btn-sair"> 🚪 Sair </button>
+        </div>
+    </div>
+
+    <div class="container-panel">
+
+        <h2>Painel de Controle</h2>
+
+        <p>Gestão Financeira Pessoal</p>
+
+        <div class="funcoes-panel">
+
+            <a href="form.html" class="module-card">Cadastra / Gerir Contas</a>
+
+            <a href="fluxo.html" class="module-card"> Fluxo de Caixa </a>
+
+            <a href="cards.html" class="module-card">Contas Cadastradas</a>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Validação de sessão e nome do utilizador
+        const loggedUser = JSON.parse(localStorage.getItem('finance_logged_user'));
+        if (!loggedUser) {
+            window.location.href = 'login.html';
+        } else {
+            document.getElementById('welcome-msg').textContent = `Olá, ${loggedUser.name}`;
+        }
+
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            localStorage.removeItem('finance_logged_user');
+            window.location.href = 'login.html';
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const loggedUser = JSON.parse(localStorage.getItem('finance_logged_user'));
+
+            // Injeta o nome no elemento do topo direito
+            const welcomeEl = document.getElementById('user-welcome');
+            if (welcomeEl && loggedUser && loggedUser.name) {
+                welcomeEl.textContent = `Olá, ${loggedUser.name}`;
+            }
+
+            // Ação do Botão Sair
+            const btnLogout = document.getElementById('btn-logout');
+            if (btnLogout) {
+                btnLogout.addEventListener('click', () => {
+                    if (confirm('Deseja realmente sair da conta?')) {
+                        localStorage.removeItem('finance_logged_user');
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script src="./js/panel.js"></script>
+    <script src="./js/cashflow-engine.js"></script>
+    <script src="./js/cashflow-ui.js"></script>
+</body>
+
+</html>

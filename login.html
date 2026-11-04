@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance - Login</title>
+    <!-- Vinculando o nosso estilo global (tema escuro) -->
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+
+    <div class="card">
+        <h2>Finance - Entrar</h2>
+
+        <!-- Formulário de Login -->
+        <form id="form-login">
+            <div class="input-group">
+                <label for="login-email">E-mail</label>
+                <input type="email" id="login-email" required placeholder="seu@email.com">
+            </div>
+
+            <div class="input-group">
+                <label for="login-senha">Senha</label>
+                <div class="input-wrapper">
+                    <input type="password" id="login-senha" required placeholder="Sua senha">
+                    <button type="button" id="btn-toggle-pass" class="toggle-password" title="Mostrar senha">
+                        <svg id="eye-icon" viewBox="0 0 24 24">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn">Entrar</button>
+        </form>
+
+        <p class="switch-text">Não tem uma conta? <a href="index.html">Cadastre-se</a></p>
+    </div>
+    <!-- Script de login com a lógica do olho -->
+    <script src="./js/login.js"></script>
+</body>
+
+</html>

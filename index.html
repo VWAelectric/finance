@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance - Cadastro</title>
+    <!-- Vinculando o nosso estilo global -->
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+
+    <div class="card">
+        <h2>Finance - Criar Conta</h2>
+        
+        <!-- Formulário de Cadastro -->
+        <form id="form-register">
+            <div class="input-group">
+                <label for="reg-nome">Nome Completo</label>
+                <input type="text" id="reg-nome" required placeholder="Seu nome">
+            </div>
+            
+            <div class="input-group">
+                <label for="reg-email">E-mail</label>
+                <input type="email" id="reg-email" required placeholder="seu@email.com">
+            </div>
+            
+            <div class="input-group">
+                <label for="reg-senha">Senha</label>
+                <input type="password" id="reg-senha" required placeholder="Crie uma senha">
+            </div>
+            
+            <button type="submit" class="btn">Cadastrar</button>
+        </form>
+
+        <p class="switch-text">Já tem uma conta? <a href="login.html">Fazer Login</a></p>
+    </div>
+
+
+    <script src="./js/main.js"></script>
+
+</body>
+</html>
